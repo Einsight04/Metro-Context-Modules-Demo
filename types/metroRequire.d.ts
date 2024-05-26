@@ -2,13 +2,13 @@
 // Adds support for the runtime `require.context` method.
 // https://github.com/facebook/metro/pull/822/
 
-declare var module: NodeModule;
+declare let module: NodeModule;
 
 declare namespace __MetroModuleApi {
   interface RequireContext {
     /** Return the keys that can be resolved. */
     keys(): string[];
-    (id: string): any;
+    (id: string): unknown;
     <T>(id: string): T;
     /** **Unimplemented:** Return the module identifier for a user request. */
     resolve(id: string): string;
@@ -20,7 +20,7 @@ declare namespace __MetroModuleApi {
     /**
      * Returns the exports from a dependency. The call is sync. No request to the server is fired. The compiler ensures that the dependency is available.
      */
-    (path: string): any;
+    (path: string): unknown;
     <T>(path: string): T;
 
     /**
@@ -37,7 +37,7 @@ declare namespace __MetroModuleApi {
       path: string,
       recursive?: boolean,
       filter?: RegExp,
-      mode?: "sync" | "eager" | "weak" | "lazy" | "lazy-once"
+      mode?: "sync" | "eager" | "weak" | "lazy" | "lazy-once",
     ): RequireContext;
   }
 }
@@ -46,6 +46,6 @@ declare namespace __MetroModuleApi {
  * Declare process variable
  */
 declare namespace NodeJS {
-  interface Require extends __MetroModuleApi.RequireFunction {}
+  type Require = __MetroModuleApi.RequireFunction;
 }
-declare var process: NodeJS.Process;
+declare let process: NodeJS.Process;
